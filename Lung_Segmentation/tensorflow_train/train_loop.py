@@ -6,6 +6,8 @@ from utils.io.common import create_directories, copy_files_to_folder
 import datetime
 from collections import OrderedDict
 from os import path
+import logging
+
 
 class MainLoopBase(object):
     def __init__(self):
@@ -48,9 +50,9 @@ class MainLoopBase(object):
         self.sess.run(tf.global_variables_initializer())
         self.sess.run(tf.local_variables_initializer())
 
-        print('Variables')
+        logging.info('Variables')
         for i in tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES):
-            print(i)  # i.name if you want just a name
+            logging.info(i)  # i.name if you want just a name
 
     def start_threads(self):
         self.threads = tf.train.start_queue_runners(sess=self.sess, coord=self.coord)
@@ -64,7 +66,7 @@ class MainLoopBase(object):
             model_filename = self.load_model_filename
         else:
             model_filename = os.path.join(self.output_folder, 'weights/model-' + str(self.current_iter))
-        print('Restoring model ' + model_filename)
+        logging.info('Restoring model ' + model_filename)
         self.restore_variables(self.sess, model_filename)
 
     def restore_variables(self, session, model_filename):
@@ -87,7 +89,7 @@ class MainLoopBase(object):
                     restore_vars.append(curr_var)
                 else:
                     not_restore_vars.append(var_name)
-        print('not restoring', not_restore_vars)
+        logging.info('not restoring', not_restore_vars)
         saver = tf.train.Saver(restore_vars)
         saver.restore(session, model_filename)
 
@@ -144,9 +146,9 @@ class MainLoopBase(object):
         self.coord.join(self.threads)
 
     def snapshot(self):
-        print('Creating snapshot...')
+        logging.info('Creating snapshot...')
         save_path = self.saver.save(self.sess, os.path.join(self.output_folder, 'weights/model'), global_step=self.current_iter)
-        print('Model saved in file %s' % save_path)
+        logging.info('Model saved in file %s' % save_path)
 
     def train(self):
         """
@@ -179,25 +181,25 @@ class MainLoopBase(object):
             self.layer_weight_inspector.writer.add_summary(summary, global_step=self.current_iter)
 
     def print_training_parameters(self):
-        print('Training parameters:')
+        logging.info('Training parameters:')
         if isinstance(self.optimizer, tf.train.GradientDescentOptimizer):
-            print('Optimizer: SGD')
+            logging.info('Optimizer: SGD')
         elif isinstance(self.optimizer, tf.train.MomentumOptimizer):
-            print('Optimizer: momentum')
+            logging.info('Optimizer: momentum')
         elif isinstance(self.optimizer, tf.train.AdamOptimizer):
-            print('Optimizer: adam')
+            logging.info('Optimizer: adam')
         if self.batch_size is not None:
-            print('Batch size:', self.batch_size)
+            logging.info('Batch size:', self.batch_size)
         if self.learning_rate is not None:
-            print('Learning rate:', self.learning_rate)
+            logging.info('Learning rate:', self.learning_rate)
         if self.max_iter is not None:
-            print('Max iterations:', self.max_iter)
+            logging.info('Max iterations:', self.max_iter)
 
     def run(self):
         self.init_all()
         if self.current_iter > 0 or self.load_model_filename is not None:
             self.load_model()
-        print('Starting main loop')
+        logging.info('Starting main loop')
         self.print_training_parameters()
         try:
             while self.current_iter <= self.max_iter:
@@ -219,7 +221,7 @@ class MainLoopBase(object):
     def run_test(self):
         self.init_all()
         self.load_model()
-        print('Starting main test loop')
+        logging.info('Starting main test loop')
         try:
             self.test()
         finally:

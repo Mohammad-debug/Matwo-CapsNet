@@ -4,6 +4,9 @@ sys.path.append("./Lung_Segmentation")
 import logging
 import argparse
 
+# Polyaxon
+from polyaxon_client.tracking import Experiment, get_data_paths
+
 from collections import OrderedDict
 import tensorflow as tf
 import numpy as np
@@ -88,7 +91,7 @@ class MainLoop(MainLoopBase):
             else:
                     prediction = training_net(data, routing_type=self.routing_type, num_labels=self.num_labels, is_training=True, data_format=self.data_format)
 
-        #logging.infoparameters count
+        #print parameters count
         logging.info('------------')
         var_num=np.sum([np.product([xi.value for xi in x.get_shape()]) for x in tf.global_variables()])
         logging.info('Net number of parameter : '+ str(var_num))
@@ -126,7 +129,7 @@ class MainLoop(MainLoopBase):
 
 
     def test(self):
-        print('Testing...')
+        logging.info('Testing...')
         channel_axis = 0
         if self.data_format == 'channels_last':
             channel_axis = 3
@@ -171,6 +174,11 @@ class MainLoop(MainLoopBase):
         self.val_loss_aggregator.finalize(self.current_iter, summary_values=dice_dict)
 
 if __name__ == '__main__':
+
+    # Polyaxon
+    experiment = Experiment()
+    logging.info('Start training ...')
+    
     parameter=[[softmax,network_ud,'']]
     #parameter=[[spread_loss,Matwo_CapsNet,'dual']]
     #parameter=[[spread_loss,MatVec_CapsNet,'dynamic']]

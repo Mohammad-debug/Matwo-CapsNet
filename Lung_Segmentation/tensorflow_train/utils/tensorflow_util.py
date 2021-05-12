@@ -1,5 +1,6 @@
 
 import tensorflow as tf
+import logging
 
 def create_reset_metric(metric, variable_scope, **metric_args):
     with tf.variable_scope(variable_scope) as scope:
@@ -24,10 +25,10 @@ def print_progress_bar(iteration, total, prefix='Testing ', suffix=' complete', 
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
     filled_length = int(length * iteration // total)
     bar = fill * filled_length + '-' * (length - filled_length)
-    print('\r%s |%s| %s%% %s' % (prefix, bar, percent, suffix), end='\r')
+    logging.info('\r%s |%s| %s%% %s' % (prefix, bar, percent, suffix), end='\r')
     # Print New Line on Complete
     if iteration == total:
-        print()
+        logging.info()
 
 
 def create_placeholder(name, shape, shape_prefix=None, shape_postfix=None, data_type=None):

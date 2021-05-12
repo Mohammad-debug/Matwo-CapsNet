@@ -7,6 +7,7 @@ import tensorflow as tf
 
 from tensorflow_train.utils.tensorflow_util import create_reset_metric
 from collections import OrderedDict
+import logging
 
 
 def create_summary_placeholder(name):
@@ -106,7 +107,7 @@ class SummaryHandler(object):
             value_string = self.print_format.format(value) if self.print_format is not None else str(value)
             print_string += key + ': ' + value_string + ' '
         print_string += 'seconds: {}.{:03d}'.format(self.time_since_last_finalize.seconds, self.time_since_last_finalize.microseconds // 1000)
-        print(print_string)
+        logging.info(print_string)
 
     def write_csv_file(self, current_iteration, summary_values):
         """

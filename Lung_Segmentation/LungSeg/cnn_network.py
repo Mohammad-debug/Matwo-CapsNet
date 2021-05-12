@@ -2,7 +2,7 @@
 import tensorflow as tf
 from tensorflow_train.layers.layers import max_pool2d, upsample2d, concat_channels, avg_pool2d, conv2d
 from tensorflow_train.layers.initializers import he_initializer
-
+import logging
 
 def network_ud(input,  is_training, num_labels=6, data_format='channels_first'):    
     kernel_initializer = he_initializer
@@ -66,7 +66,7 @@ class UnetBase(object):
 
     def contracting(self, node, is_training):
         with tf.variable_scope('contracting'):
-            print('contracting path')
+            logging.info('contracting path')
             contracting_level_nodes = []
             for current_level in range(self.num_levels):
                 with tf.variable_scope('level' + str(current_level)):
@@ -79,7 +79,7 @@ class UnetBase(object):
 
     def parallel(self, contracting_level_nodes, is_training):
         with tf.variable_scope('parallel'):
-            print('parallel path')
+            logging.info('parallel path')
             parallel_level_nodes = []
             for current_level in range(self.num_levels):
                 with tf.variable_scope('level' + str(current_level)):
@@ -89,7 +89,7 @@ class UnetBase(object):
 
     def expanding(self, parallel_level_nodes, is_training):
         with tf.variable_scope('expanding'):
-            print('expanding path')
+            logging.info('expanding path')
             node = None
             for current_level in reversed(range(self.num_levels)):
                 if current_level == self.num_levels - 1:

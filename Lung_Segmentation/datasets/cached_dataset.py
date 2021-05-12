@@ -3,7 +3,7 @@ from datasets.dataset_base import DatasetBase
 import threading
 import multiprocessing
 import random
-
+import logging
 
 class CachedDataset(DatasetBase):
     """
@@ -41,14 +41,14 @@ class CachedDataset(DatasetBase):
         """
         Main function of the prefetching threads.
         """
-        print('CachedDataset thread start')
+        logging.info('CachedDataset thread start')
         while not self.should_stop:
             entry = self.dataset.get_next()
             with self.lock:
                 self.queue.append(entry)
                 if len(self.queue) > self.queue_size:
                     self.queue.pop(0)
-        print('CachedDataset thread stop')
+        logging.info('CachedDataset thread stop')
 
     def start_threads(self):
         """

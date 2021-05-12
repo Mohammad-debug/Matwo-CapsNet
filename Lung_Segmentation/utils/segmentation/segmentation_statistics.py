@@ -13,6 +13,7 @@ from collections import OrderedDict
 import os
 import csv
 import copy
+import logging
 
 
 class SegmentationStatistics(object):
@@ -40,9 +41,9 @@ class SegmentationStatistics(object):
         format_string = '{} mean: {:.2%}'
         if len(values) > 1:
             format_string += ', classes: ' + ' '.join(['{:.2%}'] * (len(values) - 1))
-            print(format_string.format(metric_key, *values))
+            logging.info(format_string.format(metric_key, *values))
         else:
-            print(format_string.format(metric_key, *values))
+            logging.info(format_string.format(metric_key, *values))
 
     def print_metric_summaries(self, metric_summaries):
         for key, value in metric_summaries.items():

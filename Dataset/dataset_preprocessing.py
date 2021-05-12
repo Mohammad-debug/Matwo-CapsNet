@@ -39,9 +39,9 @@ def create_mask(mask_folder,output_folder,files_extension):
                 print (file+' mask written') 
 
 def print_current(text):
-    print ('###################')
-    print (text)
-    print ('###################')
+    logging.info('###################')
+    logging.info(text)
+    logging.info('###################')
 
 if __name__ == '__main__':
     

@@ -5,7 +5,7 @@ import random
 import multiprocessing
 import os
 from collections import OrderedDict
-
+import logging
 
 class IdListIterator(IteratorBase):
     """
@@ -46,7 +46,7 @@ class IdListIterator(IteratorBase):
         ext = os.path.splitext(self.id_list_file_name)[1]
         if ext in ['.csv', '.txt']:
             self.id_list = utils.io.text.load_list_csv(self.id_list_file_name)
-        print('loaded %i ids' % len(self.id_list))
+        logging.info('loaded %i ids' % len(self.id_list))
 
     def reset(self):
         """

@@ -4,9 +4,10 @@ import tensorflow as tf
 from tensorflow_train.layers.initializers import he_initializer, selu_initializer, zeros_initializer
 from tensorflow_train.layers.normalizers import batch_norm, instance_norm, layer_norm, batch_norm_dense
 
+import logging
 
 def print_tensor_shape(node):
-    print(node.get_shape().as_list())
+    logging.info(node.get_shape().as_list())
 
 
 def printable_activation(activation):
@@ -92,7 +93,7 @@ def print_conv_parameters(inputs,
                 printable_normalization(normalization),
                 is_training,
                 data_format)
-    print(print_string)
+    logging.info(print_string)
 
 
 def print_pool_parameters(pool_type,
@@ -121,7 +122,7 @@ def print_pool_parameters(pool_type,
                 strides,
                 padding,
                 data_format)
-    print(print_string)
+    logging.info(print_string)
 
 
 def print_upsample_parameters(upsample_type,
@@ -150,7 +151,7 @@ def print_upsample_parameters(upsample_type,
                 strides,
                 padding,
                 data_format)
-    print(print_string)
+    logging.info(print_string)
 
 
 def print_shape_parameters(inputs,
@@ -160,7 +161,7 @@ def print_shape_parameters(inputs,
     inputs_shape = inputs.get_shape().as_list()
     outputs_shape = outputs.get_shape().as_list()
     print_string = '{}: type={} in={} out={}'.format(name, type, inputs_shape, outputs_shape)
-    print(print_string)
+    logging.info(print_string)
 
 def print_matwocaps_parameters(inputs,
                           outputs,
@@ -207,7 +208,7 @@ def print_matwocaps_parameters(inputs,
                 padding,
                 printable_initializer(kernel_initializer),
                 is_training)
-    print(print_string)
+    logging.info(print_string)
 
 def print_primary_matwocaps_parameters(inputs,
                           outputs,
@@ -248,4 +249,4 @@ def print_primary_matwocaps_parameters(inputs,
                 padding,
                 printable_initializer(kernel_initializer),
                 is_training)
-    print(print_string)
+    logging.info(print_string)

@@ -1,4 +1,5 @@
 import datetime
+import logging
 
 
 class Timer(object):
@@ -38,7 +39,7 @@ class Timer(object):
         return '%d.%03d' % (duration.seconds, duration.microseconds // 1000)
 
     def print_start(self):
-        print(self.name, 'starting at', self.time_string(self.start_time))
+        logging.info(self.name, 'starting at', self.time_string(self.start_time))
 
     def print_stop(self):
-        print(self.name, 'finished at', self.time_string(self.stop_time), 'elapsed time', self.seconds_string(self.elapsed_time()))
+        logging.info(self.name, 'finished at', self.time_string(self.stop_time), 'elapsed time', self.seconds_string(self.elapsed_time()))

@@ -2,7 +2,7 @@ import threading
 import numpy as np
 import tensorflow as tf
 from collections import OrderedDict
-
+import logging
 
 class DataGeneratorBase(object):
     def __init__(self,
@@ -90,7 +90,7 @@ class DataGeneratorBase(object):
         return feed_dict
 
     def thread_main(self, sess):
-        print('Data generator thread start')
+        logging.info('Data generator thread start')
         while not self.coord.should_stop():
             try:
                 feed_dict = self.get_feed_dict()
@@ -102,7 +102,7 @@ class DataGeneratorBase(object):
                     self.close(sess)
                 # otherwise, continue loop
                 continue
-        print('Data generator thread stop')
+        logging.info('Data generator thread stop')
 
     def start_threads(self, sess):
         for _ in range(self.n_threads):

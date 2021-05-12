@@ -1,6 +1,9 @@
 import sys
 sys.path.append("./Lung_Segmentation")
 
+import logging
+import argparse
+
 from collections import OrderedDict
 import tensorflow as tf
 import numpy as np
@@ -40,10 +43,10 @@ class MainLoop(MainLoopBase):
         self.data_format = 'channels_first' #WARNING: Capsule might not work with channel last ! 
         self.channel_axis = 1
         self.save_debug_images = False
-        self.base_folder = "./Dataset/"
+        self.base_folder = "/polyaxon/data1/lung/JSRT/preprocessed/"##input
         self.image_size = [128, 128] 
         self.image_spacing = [1, 1]
-        self.output_folder = './Experiments/' + self.network.__name__ + '_' + self.output_folder_timestamp()
+        self.output_folder = '/polyaxon/data1/lung/JSRT/experiments/' + self.network.__name__ + '_' + self.output_folder_timestamp() ##output
         self.dataset = Dataset(image_size = self.image_size,
                                image_spacing = self.image_spacing,
                                num_labels = self.num_labels,
@@ -85,10 +88,10 @@ class MainLoop(MainLoopBase):
             else:
                     prediction = training_net(data, routing_type=self.routing_type, num_labels=self.num_labels, is_training=True, data_format=self.data_format)
 
-        #Print parameters count
-        print ('------------')
+        #logging.infoparameters count
+        logging.info('------------')
         var_num=np.sum([np.product([xi.value for xi in x.get_shape()]) for x in tf.global_variables()])
-        print ('Net number of parameter : '+ str(var_num))
+        logging.info('Net number of parameter : '+ str(var_num))
 
         # losses
         if 'spread_loss' in self.loss_function.__name__ :

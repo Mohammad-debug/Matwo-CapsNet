@@ -48,7 +48,7 @@ class Dataset(object):
         self.dim = 2
         self.num_labels = 6
         self.image_base_folder = os.path.join(self.base_folder,'images')
-        self.setup_base_folder = os.path.join(self.base_folder, 'setup')
+        self.setup_base_folder = './Dataset/setup'
         self.mask_base_folder = os.path.join(self.base_folder,'masks')
         self.postprocessing_random = self.intensity_postprocessing_mr_random
         self.postprocessing = self.intensity_postprocessing_mr

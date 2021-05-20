@@ -46,10 +46,10 @@ class MainLoop(MainLoopBase):
         self.data_format = 'channels_first' #WARNING: Capsule might not work with channel last ! 
         self.channel_axis = 1
         self.save_debug_images = False
-        self.base_folder = "/polyaxon/data1/lung/JSRT/preprocessed/"##input
+        self.base_folder = "/polyaxon/data1/lung/JSRT/preprocessed/"##input folder
         self.image_size = [128, 128] 
         self.image_spacing = [1, 1]
-        self.output_folder = '/polyaxon/data1/lung/JSRT/experiments/' + self.network.__name__ + '_' + self.output_folder_timestamp() ##output
+        self.output_folder = '/polyaxon/data1/lung/JSRT/experiments/' + self.network.__name__ + '_' + self.output_folder_timestamp() ##output save
         self.dataset = Dataset(image_size = self.image_size,
                                image_spacing = self.image_spacing,
                                num_labels = self.num_labels,

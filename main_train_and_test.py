@@ -179,12 +179,12 @@ if __name__ == '__main__':
     experiment = Experiment()
     logging.info('Start training ...')
     
-    parameter=[[softmax,network_ud,'']]
+    #parameter=[[softmax,network_ud,'']]
     #parameter=[[spread_loss,Matwo_CapsNet,'dual']]
     #parameter=[[spread_loss,MatVec_CapsNet,'dynamic']]
     #parameter=[[spread_loss,MatVec_CapsNet,'dual']]
     #parameter=[[weighted_softmax,SegCaps_multilabels,'']]
-    #parameter=[[weighted_spread_loss,SegCaps_multilabels,'']]
+    parameter=[[weighted_spread_loss,SegCaps_multilabels,'']]
     
     for param in parameter:
             loop = MainLoop(param)

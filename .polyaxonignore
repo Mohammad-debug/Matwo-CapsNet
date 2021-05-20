@@ -10,5 +10,4 @@ var
 *.pyc
 *.swp
 .DS_Store
-./.polyaxon
 /venv/

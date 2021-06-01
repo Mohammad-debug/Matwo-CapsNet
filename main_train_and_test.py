@@ -1,11 +1,11 @@
 import sys
 sys.path.append("./Lung_Segmentation")
 
-import logging
+import logging,os
 import argparse
 
 # Polyaxon
-from polyaxon_client.tracking import Experiment, get_data_paths
+from polyaxon_client.tracking import Experiment, get_data_paths, get_outputs_path
 
 from collections import OrderedDict
 import tensorflow as tf
@@ -29,7 +29,11 @@ from LungSeg.SegCaps.SegCaps import SegCaps_multilabels
 class MainLoop(MainLoopBase):
     def __init__(self, param):
         super().__init__()
-       
+        #polyaxon
+        data_dir = os.path.join(list(get_data_paths().values())[0],"lung/JSRT/preprocessed/")
+        logging.info('DATA DIR = ' + data_dir)
+        output_path=get_outputs_path()
+
         self.loss_function=param[0]
         self.network=param[1]
         self.routing_type=param[2]
@@ -46,10 +50,10 @@ class MainLoop(MainLoopBase):
         self.data_format = 'channels_first' #WARNING: Capsule might not work with channel last ! 
         self.channel_axis = 1
         self.save_debug_images = False
-        self.base_folder = "/polyaxon/data1/lung/JSRT/preprocessed/"##input folder
+        self.base_folder = data_dir ##input folder
         self.image_size = [128, 128] 
         self.image_spacing = [1, 1]
-        self.output_folder = '/polyaxon/data1/lung/JSRT/experiments/' + self.network.__name__ + '_' + self.output_folder_timestamp() ##output save
+        self.output_folder = output_path + self.network.__name__ + '_' + self.output_folder_timestamp() ##output save
         self.dataset = Dataset(image_size = self.image_size,
                                image_spacing = self.image_spacing,
                                num_labels = self.num_labels,
@@ -177,7 +181,7 @@ if __name__ == '__main__':
 
     # Polyaxon
     experiment = Experiment()
-    logging.info('Start training ...')
+    logging.info('Start Experiment ...')
     
     #parameter=[[softmax,network_ud,'']]
     #parameter=[[spread_loss,Matwo_CapsNet,'dual']]
